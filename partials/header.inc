@@ -47,14 +47,18 @@
         </li>-->
       </ul>
     </div>
-      <div class="nav-item dropdown ">
+      <div class="nav-item dropdown col-1">
+        <?php if(isset($_SESSION['auth'])){ ?>
           <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Administration
+            <?=$_SESSION['auth']['login'];?>
           </a>
+        <?php } ?>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Inscription</a></li>
-            <li><a class="dropdown-item" href="#">Connexion</a></li>
-            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+            <?php if(isset($_SESSION['auth']) && $_SESSION['auth']['role']==1){ ?>
+            <li><a class="dropdown-item" href="inscription.php">Inscription</a></li>
+            <?php } ?>
+            <!--<li><a class="dropdown-item" href="index.php">Connexion</a></li>-->
+            <li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
           </ul>
         </div>
   </div>

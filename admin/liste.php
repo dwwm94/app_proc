@@ -42,7 +42,9 @@ $result = mysqli_query($conn, $sql);
             <th>Photo</th>
             <th>Langue</th>
             <th>Date de creation</th>
+            <?php if(isset($_SESSION['auth']) && $_SESSION['auth']['role']==1){ ?>
             <th colspan="2" class="text-center">Actions</th>
+            <?php } ?>
         </tr>
     </thead>
     <tbody>
@@ -56,9 +58,11 @@ $result = mysqli_query($conn, $sql);
             <td><img src="../assets/images/<?=$rows['image']; ?>"width="60"/></td>
             <td><?= $rows['libelle']; ?></td>
             <td><?= $rows['created']; ?></td>
+            <?php if(isset($_SESSION['auth']) && $_SESSION['auth']['role']==1){ ?>
             <td><a href="editer.php?id=<?=$rows['id_p'];?>" class="btn btn-success"><i class="fas fa-edit"></a></td>
             <td><a href="supprimer.php?id=<?=$rows['id_p'];?>" class="btn btn-danger" onclick="return confirm('Etes vous sûr de vouloir supprimer?')"><i class="fas fa-trash"></i></a></td>
-        </tr>
+            <?php } ?>
+            </tr>
     <?php } ?>
     </tbody>
 </table>

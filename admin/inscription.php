@@ -1,30 +1,32 @@
 <?php
-require_once('../connect.php');
+session_start();
+if(isset($_SESSION['auth']) && $_SESSION['auth']['role'] !=1 ){
+    header('location:index.php');
+}
 $error = '';
+require_once('../connect.php');
+
 if(isset($_POST['submit'])){
     if(!empty($_POST['login']) && !empty($_POST['pass'])){
-
         $login = trim(htmlentities(addslashes($_POST['login'])));
         $pass = md5(trim(htmlentities(addslashes($_POST['pass']))));
+        
+        if(isset($_POST['role'])){
+            $role = trim(htmlentities(addslashes($_POST['role'])));
+        }else{
+            $role = 2;
+        }
 
-        $sql = "SELECT * 
-                FROM utilisateurs
-                WHERE login = '$login' AND pass = '$pass'";
+        $sql = "INSERT INTO utilisateurs(login, pass, role)
+                VALUES('$login','$pass','$role')";
+
         $result = mysqli_query($conn, $sql);
 
-        if(mysqli_num_rows($result) > 0){
-            $data = mysqli_fetch_assoc($result);
-            session_start();
-            $_SESSION['auth'] = $data;
-            header('location:liste.php');
-        }else{
-            $error='<div class="alert alert-danger">Le login et/ou le mot ne correspondent pas</div>';
-        }
-    }else{
-        $error = '<div class="alert alert-danger text-center">Le login et le mot de passe sont réquis</div>';
-    }
+        if($result){
 
-    
+            header('location:index.php');
+        }
+    }
 }
 
 ?>
@@ -33,7 +35,7 @@ if(isset($_POST['submit'])){
 <div class="card offset-4 col-4 mt-5">
   <?=$error;?>
   <div class="card-header text-center">
-    Formulaire de Connexion
+    Formulaire d'inscription
   </div>
   <div class="card-body">
     <form action="<?=$_SERVER['PHP_SELF'];?>" method="post">
@@ -48,12 +50,12 @@ if(isset($_POST['submit'])){
         <label for="pass" class="form-label">Mot de passe*</label>
         <input type="password" class="form-control" id="pass" name="pass" placeholder="Entrer le mot de passe" required>
     </div>
-    <!--
+    
     <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <input type="checkbox" class="form-check-input" id="role" value="1" name="role">
+        <label class="form-check-label" for="role">Administrateur</label>
     </div>
-    -->
+    
     <button type="submit" class="btn btn-primary col-12" name="submit">Soumettre</button>
     </form>
   </div>
