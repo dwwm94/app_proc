@@ -1,9 +1,19 @@
 <?php
 
 require_once('../connect.php');
+
+if(isset($_POST['submit']) && !empty($_POST['search'])){
+    $mCle = trim(addslashes(htmlentities($_POST['search'])));
+    $sql = " SELECT * FROM personne p
+    INNER JOIN langues l
+    ON p.id_langue = l.id
+    WHERE nom LIKE '$mCle%' OR libelle LIKE '$mCle%'";
+}else{
+
 $sql = "SELECT * FROM personne p
         INNER JOIN langues l
         ON p.id_langue = l.id";
+}
 
 $result = mysqli_query($conn, $sql);
 
@@ -18,7 +28,7 @@ $result = mysqli_query($conn, $sql);
 <form action="<?=$_SERVER['PHP_SELF']; ?>" method="post">
     <div class="input-group justify-content-end">
         <input type="search" class="form-control offset-9 col-3 text-center" name="search" id="search" placeholder="Rechercher">
-        <button type="submit"><i class="fas fa-search"></i></button>
+        <button type="submit" name="submit"><i class="fas fa-search"></i></button>
     </div>
 </form>
 <table class="table table-striped">
