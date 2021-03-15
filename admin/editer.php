@@ -1,4 +1,5 @@
 <?php
+require_once('security.inc');
 require_once('../connect.php');
 $error = "";
 
@@ -7,7 +8,7 @@ $res = mysqli_query($conn, $sql);
 
 if(isset($_GET['id']) && $_GET['id'] <= 1000 && filter_var($_GET['id'], FILTER_VALIDATE_INT)){
     $id = htmlspecialchars(addslashes($_GET['id']));
-    $sql = "SELECT * FROM personnes p
+    $sql = "SELECT * FROM personne p
             INNER JOIN langues l
             ON p.id_langue = l.id
             WHERE p.id_p = '$id'";

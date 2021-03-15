@@ -1,4 +1,5 @@
 <?php
+require_once('security.inc');
 require_once('../connect.php');
 $error = "";
 $sql = "SELECT id, libelle FROM langues";

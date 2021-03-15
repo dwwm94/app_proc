@@ -1,5 +1,5 @@
 <?php
-
+require_once('security.inc');
 require_once('../connect.php');
 
 if(isset($_GET['id']) && $_GET['id'] < 1000){
